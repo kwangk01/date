@@ -35,7 +35,6 @@ target_compile_definitions( date
 #
 # INSTALL
 #   HAS_REMOTE_API
-# AUTO_DOWNLOAD
 # USE_OS_TZDB
 # USE_SHELL_API
 #

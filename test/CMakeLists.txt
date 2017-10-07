@@ -20,6 +20,9 @@ foreach( _file  ${_pass_sources} )
     target_link_libraries( ${_test_case_name}
         PRIVATE  date
     )
+    set_target_properties( ${_test_case_name}  PROPERTIES
+        FOLDER  "Tests"
+    )
     # add a build-time test
     add_test(
         NAME  ${_test_case_name}__build
