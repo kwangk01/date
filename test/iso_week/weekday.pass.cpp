@@ -64,8 +64,8 @@
 // constexpr weekday fri{5};
 // constexpr weekday sat{6};
 
-#include "iso_week.h"
-#include "date.h"
+#include "date/iso_week.h"
+#include "date/date.h"
 
 #include <cassert>
 #include <sstream>

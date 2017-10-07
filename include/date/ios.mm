@@ -67,7 +67,7 @@ TarInfo getTarObjectInfo(CFReadStreamRef readStream, int64_t location);
 std::string getTarObject(CFReadStreamRef readStream, int64_t size);
 bool writeFile(CFURLRef tzdataUrl, std::string fileName, std::string data,
                int64_t realContentSize);
-    
+
 std::string
 get_current_timezone()
 {
@@ -75,15 +75,15 @@ get_current_timezone()
     CFStringRef tzNameRef = CFTimeZoneGetName(tzRef);
     CFIndex bufferSize = CFStringGetLength(tzNameRef) + 1;
     char buffer[bufferSize];
-    
+
     if (CFStringGetCString(tzNameRef, buffer, bufferSize, kCFStringEncodingUTF8))
     {
         CFRelease(tzRef);
         return std::string(buffer);
     }
-    
+
     CFRelease(tzRef);
-    
+
     return "";
 }
 
@@ -96,7 +96,7 @@ get_tzdata_path()
                      INTERNAL_DIR + "/" + TZDATA_DIR);
     std::string result_path(std::string(convertCFStringRefPathToCStringPath(homePath)) +
                      INTERNAL_DIR);
-    
+
     if (access(path.c_str(), F_OK) == 0)
     {
 #if TAR_DEBUG
@@ -104,7 +104,7 @@ get_tzdata_path()
 #endif
         CFRelease(homeUrlRef);
         CFRelease(homePath);
-        
+
         return result_path;
     }
 
@@ -118,20 +118,20 @@ get_tzdata_path()
         CFURLRef archiveUrl = static_cast<CFURLRef>(CFArrayGetValueAtIndex(paths, 0));
         CFStringRef archiveName = CFURLCopyPath(archiveUrl);
         archiveUrl = CFBundleCopyResourceURL(mainBundle, archiveName, NULL, NULL);
-        
+
         extractTzdata(homeUrlRef, archiveUrl, path);
-        
+
         CFRelease(archiveUrl);
         CFRelease(archiveName);
     }
-    
+
     CFRelease(homeUrlRef);
     CFRelease(homePath);
     CFRelease(paths);
 
     return result_path;
 }
-        
+
 std::string
 convertCFStringRefPathToCStringPath(CFStringRef ref)
 {
@@ -142,7 +142,7 @@ convertCFStringRefPathToCStringPath(CFStringRef ref)
     delete[] buffer;
     return result;
 }
-        
+
 bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
 {
     const char *TAR_TMP_PATH = "/tmp.tar";
@@ -171,14 +171,14 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
                                                             false);
     CFStringRef tarPathRef = CFURLCopyPath(tarUrl);
     auto tarPath = convertCFStringRefPathToCStringPath(tarPathRef);
-    
+
     // create tzdata directory
     mkdir(destPath.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
     // create stream
     CFWriteStreamRef writeStream = CFWriteStreamCreateWithFile(NULL, tarUrl);
     bool success = true;
-    
+
     CFRelease(libraryStr);
     CFRelease(libraryUrl);
     CFRelease(tzdataPathRef);
@@ -198,7 +198,7 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
         {
             printf("kCFStreamErrorDomainMacOSStatus %i\n", err.error);
         }
-        
+
         success = false;
     }
 
@@ -223,7 +223,7 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
         {
             CFIndex writtenBytes = CFWriteStreamWrite(writeStream, (unsigned char*)buffer,
                                                       readBytes);
-            
+
             if (writtenBytes < 0)
             {
                 CFStreamError err = CFWriteStreamGetError(writeStream);
@@ -285,7 +285,7 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
     if (!CFReadStreamOpen(readStream))
     {
         CFStreamError err = CFReadStreamGetError(readStream);
-        
+
         if (err.domain == kCFStreamErrorDomainPOSIX)
         {
             printf("kCFStreamErrorDomainPOSIX %i", err.error);
@@ -294,7 +294,7 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
         {
             printf("kCFStreamErrorDomainMacOSStatus %i", err.error);
         }
-        
+
         success = false;
     }
 
@@ -333,14 +333,14 @@ bool extractTzdata(CFURLRef homeUrl, CFURLRef archiveUrl, std::string destPath)
             }
         }
     }
-    
+
     CFRelease(tzdataPathUrl);
     CFReadStreamClose(readStream);
     CFRelease(readStream);
-    
+
     return true;
 }
-        
+
 TarInfo
 getTarObjectInfo(CFReadStreamRef readStream, int64_t location)
 {
@@ -400,7 +400,7 @@ writeFile(CFURLRef tzdataUrl, std::string fileName, std::string data,
     CFURLRef url = CFURLCreateCopyAppendingPathComponent(NULL, tzdataUrl, fileNameRef,
                                                          false);
     CFWriteStreamRef writeStream = CFWriteStreamCreateWithFile(NULL, url);
-    
+
     CFRelease(fileNameRef);
     CFRelease(url);
 

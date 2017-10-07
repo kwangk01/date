@@ -1,0 +1,27 @@
+cmake_minimum_required( VERSION  3.3 )
+
+project( date
+         VERSION    2.2.0
+         LANGUAGES  CXX
+)
+
+set( CMAKE_CXX_STANDARD  14 )
+set( CMAKE_CXX_STANDARD_REQUIRED  ON )
+set( CMAKE_CXX_EXTENSIONS  OFF )
+
+# list( APPEND  CMAKE_MODULE_PATH  "${CMAKE_CURRENT_LIST_DIR}/cmake" )
+
+if( NOT  DEFINED  CMAKE_RUNTIME_OUTPUT_DIRECTORY )
+  set( CMAKE_RUNTIME_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/bin" )
+endif()
+if( NOT  DEFINED  CMAKE_LIBRARY_OUTPUT_DIRECTORY )
+  set( CMAKE_LIBRARY_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/lib" )
+endif()
+if( NOT  DEFINED  CMAKE_ARCHIVE_OUTPUT_DIRECTORY )
+  set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY  "${CMAKE_BINARY_DIR}/lib" )
+endif()
+
+enable_testing()
+
+add_subdirectory( src )
+add_subdirectory( test )

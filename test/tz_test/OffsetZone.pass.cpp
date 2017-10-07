@@ -22,7 +22,7 @@
 
 // Test custom time zone support
 
-#include "tz.h"
+#include "date/tz.h"
 
 class OffsetZone
 {
