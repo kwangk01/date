@@ -1,3 +1,4 @@
+#include <sstream>
 // The MIT License (MIT)
 //
 // Copyright (c) 2015, 2016, 2017 Howard Hinnant
@@ -3341,16 +3342,12 @@ init_tzdb()
     }
     db->version = get_version(path);
 #endif  // !AUTO_DOWNLOAD
-
-    CONSTDATA char*const files[] =
-    {
-        "africa", "antarctica", "asia", "australasia", "backward", "etcetera", "europe",
-        "pacificnew", "northamerica", "southamerica", "systemv", "leapseconds"
-    };
+    static std::array<std::string, 9> files = { "@AFRICA@", "@ANTARCTICA@", "@AUSTRALASIA@", "@BACKWARD@", 
+                                         "@ETCETERA@", "@NORTHAMERICA@", "@SOUTHAMERICA@", "@SYSTEMV@", "@LEAPSECONDS@"};
 
     for (const auto& filename : files)
     {
-        std::ifstream infile(path + filename);
+        std::ifstream infile(filename);
         while (infile)
         {
             std::getline(infile, line);
@@ -3390,6 +3387,7 @@ init_tzdb()
             }
         }
     }
+
     std::sort(db->rules.begin(), db->rules.end());
     Rule::split_overlaps(db->rules);
     std::sort(db->zones.begin(), db->zones.end());

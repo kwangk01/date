@@ -63,10 +63,9 @@ endif()
 # download and extract the timezone database
 if( NOT  EXISTS  "${_tzdata_archive_dir}/tzdata/README" )
     file(
-        DOWNLOAD  "https://www.iana.org/time-zones/repository/releases/${_tzdata_archive_file}"  ${_tzdata_download_filepath}
-        EXPECTED_HASH  SHA256=f8242a522ea3496b0ce4ff4f2e75a049178da21001a08b8e666d8cbe07d18086
-        TLS_VERIFY  ON
-        TIMEOUT  10
+       DOWNLOAD  "https://www.iana.org/time-zones/repository/releases/${_tzdata_archive_file}"  ${_tzdata_download_filepath}
+       TLS_VERIFY  ON
+       TIMEOUT  10
     )
     execute_process(
         COMMAND  ${CMAKE_COMMAND} -E tar xf ${_tzdata_download_filepath}
@@ -77,7 +76,6 @@ endif()
 unset( _tzdata_archive_file  CACHE )
 unset( _tzdata_archive_ext  CACHE )
 unset( _tzdata_download_filepath )
-
 
 add_subdirectory( src )
 add_subdirectory( test )
