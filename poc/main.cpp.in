@@ -1,0 +1,37 @@
+#include <iostream>
+#include <sstream>
+int main(int argc, char *argv[])
+{
+
+//#ifdef WITHTZDB
+//    std::istringstream africa_stream("@AFRICA@");
+//    std::istringstream antartica_stream("@ANTARCTICA@");
+//    std::istringstream autralasia_stream("@AUSTRALASIA@");
+//    std::istringstream backward_stream("@BACKWARD@");
+//    std::istringstream etcetera_stream("@ETCETERA@");
+//    std::istringstream northamerica_stream("@NORTHAMERICA@");
+//    std::istringstream southamerica_stream("@SOUTHAMERICA@");
+//    std::istringstream systemv_stream("@SYSTEMV@");
+//    std::istringstream leapseconds_stream("@LEAPSECONDS@");
+//#else
+//    std::istringstream africa_stream("blah");
+//#endif
+//    std::cout << africa_stream.str() << std::endl;
+//    return 0;
+
+#ifdef WITHTZDB
+    std::string africa_stream("@AFRICA@");
+    std::string antartica_stream("@ANTARCTICA@");
+    std::string autralasia_stream("@AUSTRALASIA@");
+    std::string backward_stream("@BACKWARD@");
+    std::string etcetera_stream("@ETCETERA@");
+    std::string northamerica_stream("@NORTHAMERICA@");
+    std::string southamerica_stream("@SOUTHAMERICA@");
+    std::string systemv_stream("@SYSTEMV@");
+    std::string leapseconds_stream("@LEAPSECONDS@");
+#else
+    std::string africa_stream("blah");
+#endif
+    std::cout << africa_stream << std::endl;
+    return 0;
+}

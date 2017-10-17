@@ -9,6 +9,10 @@ set( CMAKE_CXX_STANDARD  14 )
 set( CMAKE_CXX_STANDARD_REQUIRED  ON )
 set( CMAKE_CXX_EXTENSIONS  OFF )
 
+option( DATE_USE_OS_TZDB "" OFF )
+option( DATE_AUTO_DOWNLAOD "" OFF )
+option( DATE_MAKE_PORTABLE "" OFF )
+
 # list( APPEND  CMAKE_MODULE_PATH  "${CMAKE_CURRENT_LIST_DIR}/cmake" )
 
 if( NOT  DEFINED  CMAKE_RUNTIME_OUTPUT_DIRECTORY )
@@ -77,5 +81,38 @@ unset( _tzdata_archive_file  CACHE )
 unset( _tzdata_archive_ext  CACHE )
 unset( _tzdata_download_filepath )
 
-add_subdirectory( src )
+
+
+set ( _use_os_tzdb 0 )
+set ( _auto_download 0 )
+set ( _make_portable 0 )
+
+if ( NOT DATE_MAKE_PORTABLE ) 
+    if ( WIN32 )
+        set ( _auto_downlaod 1 )
+    else()
+        set ( _use_os_tzdb 1 )
+    endif()
+else()
+    set ( _make_portable 1 )
+endif()
+
+if ( DATE_USE_OS_TZDB ) 
+    if ( WIN32 )
+        message( FATAL_ERROR "Cannot use OS timezone database option on Windows" )
+    else()
+        set ( _use_os_tzdb 1 )
+    endif()
+endif()
+
+if ( DATE_AUTO_DOWNLOAD ) 
+    set ( _auto_download 1 )
+endif()
+
+add_definitions( -DUSE_OS_TZDB=${_use_os_tzdb} )
+add_definitions( -DHAS_REMOTE_API=${_auto_download} )
+add_definitions( -DAUTO_DOWNLOAD=${_auto_download} )
+add_definitions( -DMAKE_PORTABLE=${_make_portable} )
+
+#add_subdirectory( src )
 add_subdirectory( test )

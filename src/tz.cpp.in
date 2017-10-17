@@ -3342,9 +3342,17 @@ init_tzdb()
     }
     db->version = get_version(path);
 #endif  // !AUTO_DOWNLOAD
+
+#if MAKE_PORTABLE
     static std::array<std::string, 9> files = { "@AFRICA@", "@ANTARCTICA@", "@AUSTRALASIA@", "@BACKWARD@", 
                                          "@ETCETERA@", "@NORTHAMERICA@", "@SOUTHAMERICA@", "@SYSTEMV@", "@LEAPSECONDS@"};
-
+#else
+    CONSTDATA char*const files[] =
+    {
+        "africa", "antarctica", "asia", "australasia", "backward", "etcetera", "europe",
+        "pacificnew", "northamerica", "southamerica", "systemv", "leapseconds"
+    };
+#endif
     for (const auto& filename : files)
     {
         std::ifstream infile(filename);
